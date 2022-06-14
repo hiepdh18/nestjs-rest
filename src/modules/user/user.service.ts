@@ -17,19 +17,23 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const listUsers = await this.userRepository.find({
+      select: ['email', 'name'],
+    });
+    return;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  // findOne(id: number) {
+  //   const user = await this.userRepository.findOneByOrFail(id);
+  //   return `This action returns a #${id} user`;
+  // }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} user`;
+  // }
 }
