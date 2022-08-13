@@ -4,7 +4,7 @@ import { EntityId } from 'typeorm/repository/EntityId';
 
 @Injectable()
 export class BaseRepository<T> {
-  constructor(protected readonly repository: Repository<T>) { }
+  constructor(protected readonly repository: Repository<T>) {}
 
   async index(): Promise<T[]> {
     return await this.repository.find();

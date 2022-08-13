@@ -71,3 +71,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## reate db 
+docker run -d  --name owl-postgres -p 5432:5432 -e POSTGRES_PASSWORD=owllocal  -e POSTGRES_DB=owldb -e POSTGRES_USER=dev -d postgres

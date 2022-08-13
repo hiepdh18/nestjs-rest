@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import 'reflect-metadata';
 import { deepFind } from '../utils/util';
 
@@ -34,7 +34,7 @@ export interface MapperProps {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export class DtoMapper<DTOAttributes = any> {
+export class DTOMapper<DTOAttributes = any> {
   public mapperProps: MapperProps;
 
   constructor(data?: DTOAttributes) {
@@ -50,7 +50,7 @@ export class DtoMapper<DTOAttributes = any> {
 
     if (this.mapperProps) {
       for (const prop of Object.keys(this.mapperProps)) {
-        if (this[prop] instanceof DtoMapper) {
+        if (this[prop] instanceof DTOMapper) {
           // support deep mapping
           this.mappingChild(this, data, prop);
           continue;
@@ -156,7 +156,7 @@ export function MappedDto(target: any) {
   const f: any = (...args) => {
     const instance = new original(args);
     if (instance.mapperProps) {
-      const mapper = new DtoMapper();
+      const mapper = new DTOMapper();
       mapper.mapperProps = instance.mapperProps;
       const __from__ = Reflect.getMetadata(symbolFromMap, mapper);
       __from__(args[0]);

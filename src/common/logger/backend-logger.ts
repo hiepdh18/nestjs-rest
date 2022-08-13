@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import { REQUEST_ID, SESSION_USER } from 'common/constant/constants';
 import { SessionMiddleware } from 'common/middleware/session.middleware';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 // import { User } from 'modules/user/schemas/user.schema';
 import * as winston from 'winston';
 // import ecsFormat from '@elastic/ecs-winston-format';
@@ -10,19 +10,13 @@ import 'winston-daily-rotate-file';
 
 const formatter = (info) => {
   const requestId = SessionMiddleware.get(REQUEST_ID) || '-';
-  // const user: User = SessionMiddleware.get(SESSION_USER);
-  // const email = user ? user.email : '-';
-
+  const user = SessionMiddleware.get(SESSION_USER);
+  const email = user ? user.email : '-';
   return `${dayjs(info.timestamp).format(
     'YYYY/MM/DD - hh:mm:ss A',
-  )} ${chalk.magentaBright(requestId)} [${info.level}] [${chalk.green(
+  )} ${chalk.magentaBright(requestId)} ${email} [${info.level}] [${chalk.green(
     info.context,
   )}] ${info.message}`;
-  // return `${dayjs(info.timestamp).format(
-  //   'YYYY/MM/DD - hh:mm:ss A',
-  // )} ${chalk.magentaBright(requestId)} ${email} [${info.level}] [${chalk.green(
-  //   info.context,
-  // )}] ${info.message}`;
 };
 
 const customFormat = winston.format.combine(

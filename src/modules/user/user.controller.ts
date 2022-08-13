@@ -14,7 +14,7 @@ import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('user')
-@Controller('user')
+@Controller('/api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -26,7 +26,15 @@ export class UserController {
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    console.log('hello');
+    const test = {
+      email: { email: 'hiep@gmail.com' },
+      password: 'asfdag',
+      name: 'saf',
+    };
+    const rs = new CreateUserDto(test);
+    console.log(rs);
+    // return this.userService.findAll();
   }
 
   // @Get(':id')
