@@ -5,24 +5,24 @@
 //   UnauthorizedException,
 // } from '@nestjs/common';
 // import { BackendLogger } from 'common/logger/backend-logger';
-// import { expressjwt } from 'express-jwt';
 // import { expressJwtSecret } from 'jwks-rsa';
 // import { promisify } from 'util';
+// import * as jwt from 'express-jwt';
 
 // @Injectable()
 // export class AuthGuard implements CanActivate {
 //   private readonly logger = new BackendLogger(AuthGuard.name);
 //   async canActivate(context: ExecutionContext): Promise<boolean> {
 //     const checkJwt = promisify(
-//       expressjwt({
+//       jwt({
 //         secret: expressJwtSecret({
 //           cache: true,
 //           rateLimit: true,
 //           jwksRequestsPerMinute: 5,
-//           jwksUri: process.env.AUTH0_DOMAIN,
+//           jwksUri: '',
 //         }),
-//         // audience: '',
-//         // issuer: '',
+//         audience: '',
+//         issuer: '',
 //         algorithms: ['RS256'],
 //       }),
 //     );

@@ -1,3 +1,4 @@
+import { TokenDTO } from './dtos/token.dto';
 import { BackendLogger } from './../../common/logger/backend-logger';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
@@ -20,6 +21,7 @@ export class AuthService {
       `${process.env.AUTH0_DOMAIN}oauth/token`,
       options,
     );
-    console.log(data);
+    this.logger.log(`token: ${data.access_token}`);
+    return new TokenDTO(data);
   };
 }
