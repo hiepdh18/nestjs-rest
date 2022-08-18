@@ -1,22 +1,50 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { BackendLogger } from 'common/logger/backend-logger';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { TokenDTO } from './dtos/token.dto';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 
-@Controller('api/auth')
+@Controller('/api/auth')
 export class AuthController {
   private readonly logger = new BackendLogger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/login')
-  login(): Promise<TokenDTO> {
-    return this.authService.login('hiepdh@owle.com', '123456aA@');
+  @UseGuards(LoginGuard)
+  @Get('/oidc-login')
+  OIDCLogin() {
+    this.logger.log(`User login successful`);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Post('/password-login')
+  passwordLogin(@Body() body): Promise<TokenDTO> {
+    console.log(`🔥🔥🔥 => AuthController => passwordLogin => req`, body);
+    return this.authService.passwordLogin(body.email, body.password);
+  }
+
+  @Get('/user')
+  user(@Request() req) {
+    return req.user;
+  }
+
+  @UseGuards(LoginGuard)
+  @Get('/callback')
+  loginCallback(@Res() res: Response) {
+    res.redirect('/');
+  }
+
+  @UseGuards(AuthGuard)
   @Post('/test')
-  test(): Promise<TokenDTO> {
-    return this.authService.login('hiepdh@owle.com', '123456aA@');
+  test(): any {
+    return { status: 'success' };
   }
 }

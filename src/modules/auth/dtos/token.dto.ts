@@ -11,4 +11,7 @@ export class TokenDTO extends DTOMapper {
 
   @MapFrom()
   token_type?: string;
+
+  @MapFrom()
+  refresh_token?: string;
 }

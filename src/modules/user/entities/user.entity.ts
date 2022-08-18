@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export class Role {
+  name: string;
+
+  enabled: boolean;
+}
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -18,4 +23,8 @@ export class User {
   @Column()
   @ApiProperty()
   password: string;
+
+  @Column()
+  @ApiProperty()
+  roles: Role[];
 }

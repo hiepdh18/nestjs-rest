@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtPayload } from 'modules/auth/interfaces/jwtPayload.interface';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,13 +18,18 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  async findAll() {
+  async findAllUser() {
     const listUsers = await this.userRepository.find({
       select: ['email', 'name'],
     });
     return;
   }
 
+  async findOneUser(opts) {
+    try {
+      return await this.userRepository.findOne({});
+    } catch (error) {}
+  }
   // findOne(id: number) {
   //   const user = await this.userRepository.findOneByOrFail(id);
   //   return `This action returns a #${id} user`;
