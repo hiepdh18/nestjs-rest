@@ -22,13 +22,11 @@ export class AuthGuard implements CanActivate {
           jwksUri: `${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
         }),
         audience: process.env.AUTH0_AUDIENCE,
-        // issuer: process.env.AUTH0_REDIRECT_URI + '/.well-known/jwks.json',
         algorithms: ['RS256'],
       }),
     );
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
-    this.logger.debug(`REST ${req.method}, Path: ${req.path}`);
     try {
       await checkJwt(req, res);
       return true;

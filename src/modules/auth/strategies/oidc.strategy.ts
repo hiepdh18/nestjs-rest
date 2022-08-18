@@ -1,3 +1,4 @@
+import { BackendLogger } from 'common/logger/backend-logger';
 import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import {
@@ -21,6 +22,7 @@ export const buildOpenIdClient = async () => {
 };
 
 export class OidcStrategy extends PassportStrategy(Strategy, 'oidc') {
+  private readonly logger = new BackendLogger(OidcStrategy.name);
   client: Client;
 
   constructor(private readonly authService: AuthService, client: Client) {
@@ -49,6 +51,7 @@ export class OidcStrategy extends PassportStrategy(Strategy, 'oidc') {
         refresh_token,
         userinfo,
       };
+      this.logger.log(JSON.stringify(user));
       return user;
     } catch (err) {
       throw new UnauthorizedException();

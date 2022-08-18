@@ -4,7 +4,7 @@ import { BackendLogger } from 'common/logger/backend-logger';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from '../auth.service';
-import { JwtPayload } from './../interfaces/jwtPayload.interface';
+import { JwtPayload } from '../interfaces/jwtPayload.interface';
 
 // import { JwtPayload, IJwtPayload } from './interfaces/jwtPayload.interface';
 
@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       }),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       audience: process.env.AUTH0_AUDIENCE,
-      issuer: `${process.env.AUTH0_ISSUER_URL}`,
+      issuer: `${process.env.AUTH0_DOMAIN}`,
       algorithms: ['RS256'],
     });
   }
@@ -34,6 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //   throw new UnauthorizedException();
     // }
     // return user;
+    this.logger.log('JSON.stringify(payload)');
     return payload;
   }
 }

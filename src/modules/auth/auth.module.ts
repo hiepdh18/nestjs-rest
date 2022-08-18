@@ -4,8 +4,8 @@ import { UserModule } from './../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { SessionSerializer } from './session.serializer';
-import { JwtStrategy } from './strategeis/auth0.strategy';
-import { buildOpenIdClient, OidcStrategy } from './strategeis/oidc.strategy';
+import { JwtStrategy } from './strategies/auth0.strategy';
+import { buildOpenIdClient, OidcStrategy } from './strategies/oidc.strategy';
 
 const OidcStrategyFactory = {
   provide: 'OidcStrategy',
@@ -17,7 +17,6 @@ const OidcStrategyFactory = {
   inject: [AuthService],
 };
 @Module({
-  // imports: [PassportModule.register({ defaultStrategy: 'jwt' }), UserModule],
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     PassportModule.register({ session: true, defaultStrategy: 'oidc' }),
