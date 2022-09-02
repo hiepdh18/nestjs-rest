@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -26,14 +17,12 @@ export class UserController {
 
   @Get()
   findAll() {
-    console.log('hello');
     const test = {
       email: { email: 'hiep@gmail.com' },
       password: 'asfdag',
       name: 'saf',
     };
     const rs = new CreateUserDto(test);
-    console.log(rs);
     // return this.userService.findAll();
   }
 

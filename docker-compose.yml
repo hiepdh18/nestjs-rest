@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  node-base:
+    container_name: node-base
+    image: node-base:v1
+    volumes:
+      - ./:/app
+    environment:
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: owl-postgres
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 3001:3000
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on: 
+      - owl-postgres
+      - redis
+  owl-postgres:
+    container_name: owl-postgres
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: owllocal
+      POSTGRES_DB: owldb
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-net
+    restart: unless-stopped
+  redis:
+    image: redis:7.0.4-alpine
+    volumes:
+      - .docker/data/redis:/data
+    networks:
+      - redis-net
+    restart: unless-stopped
+networks:
+  postgres-net:
+    driver: bridge
+  redis-net:
+    driver: bridge

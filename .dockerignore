@@ -1,0 +1,13 @@
+node_modules
+
+.vscode
+
+.docker
+
+public/images/*
+
+.env
+
+Dockerfile
+
+docker-compose.yml

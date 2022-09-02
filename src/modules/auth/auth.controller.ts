@@ -7,15 +7,16 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { BackendLogger } from 'common/logger/backend-logger';
 import { Response } from 'express';
 import { Issuer } from 'openid-client';
 import { AuthService } from './auth.service';
 import { TokenDTO } from './dtos/token.dto';
-import { AuthGuard } from './guards/auth.guard';
+// import { AuthenticatedGuard } from './guards/auth0.guard';
 import { LoginGuard } from './guards/login.guard';
 
-@Controller('/api/auth')
+@Controller()
 export class AuthController {
   private readonly logger = new BackendLogger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
@@ -26,9 +27,14 @@ export class AuthController {
     this.logger.log(`User login successful`);
   }
 
+  @UseGuards(LoginGuard)
+  @Get('/callback')
+  loginCallback(@Res() res: Response) {
+    res.redirect('/');
+  }
+
   @Post('/password-login')
   passwordLogin(@Body() body): Promise<TokenDTO> {
-    console.log(`🔥🔥🔥 => AuthController => passwordLogin => req`, body);
     return this.authService.passwordLogin(body.email, body.password);
   }
 
@@ -37,14 +43,8 @@ export class AuthController {
     return req.user;
   }
 
-  @UseGuards(LoginGuard)
-  @Get('/callback')
-  loginCallback(@Res() res: Response) {
-    res.redirect('/');
-  }
-
-  @UseGuards(AuthGuard)
-  @Post('/test')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/cats')
   test(): any {
     return { status: 'success' };
   }
@@ -52,12 +52,7 @@ export class AuthController {
   @Get('/logout')
   async logout(@Request() req, @Res() res: Response) {
     const id_token = req.user ? req.user.id_token : undefined;
-    req.logout(function (err) {
-      if (err) {
-        res.redirect('/');
-      }
-      res.redirect('/');
-    });
+    req.logout(() => console.log('done'));
     req.session.destroy(async (error: any) => {
       const TrustIssuer = await Issuer.discover(
         `${process.env.AUTH0_DOMAIN}/.well-known/openid-configuration`,

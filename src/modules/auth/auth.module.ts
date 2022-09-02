@@ -4,7 +4,7 @@ import { UserModule } from './../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { SessionSerializer } from './session.serializer';
-import { JwtStrategy } from './strategies/auth0.strategy';
+import { Auth0Strategy } from './strategies/auth0.strategy';
 import { buildOpenIdClient, OidcStrategy } from './strategies/oidc.strategy';
 
 const OidcStrategyFactory = {
@@ -23,7 +23,12 @@ const OidcStrategyFactory = {
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [JwtStrategy, OidcStrategyFactory, SessionSerializer, AuthService],
-  exports: [PassportModule],
+  providers: [
+    Auth0Strategy,
+    OidcStrategyFactory,
+    SessionSerializer,
+    AuthService,
+  ],
+  exports: [PassportModule, Auth0Strategy],
 })
 export class AuthModule {}
